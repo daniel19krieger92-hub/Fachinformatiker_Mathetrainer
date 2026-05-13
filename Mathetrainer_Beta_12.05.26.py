@@ -892,8 +892,7 @@ class Mathetrainer(customtkinter.CTk):
         self.speicher_next_button = customtkinter.CTkButton(self.speicher_btn_frame, text="Nächste Aufgabe",command=self.neue_speicher_aufgabe, fg_color="green")
 
     def neue_speicher_aufgabe(self, modus_auswahl=None):
-        from decimal import Decimal
-        import random
+        
 
         self.reset_fehler()
 
