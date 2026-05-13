@@ -830,12 +830,6 @@ class Mathetrainer(customtkinter.CTk):
         self.neue_hex_aufgabe()
         self.after(200, lambda: self.hex_entry.focus())
 
-    def neue_hex_aufgabe(self, *args):
-
-        if hasattr(self, 'hex_entry'):
-            self.hex_entry.delete(0, "end")
-            self.hex_entry.focus()
-
     def neue_hex_aufgabe(self, _=None):
         self.reset_fehler()
         self.aktuelle_zahl = random.randint(1, 1024)
