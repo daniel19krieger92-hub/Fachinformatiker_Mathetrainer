@@ -18,7 +18,7 @@ class Mathetrainer(customtkinter.CTk):
         self.tr_window = None
         self.note_window = None
         self.hilfe_window = None
-        #Hilfe Lexikon
+        # Hilfe Lexikon
         self.hilfe_texte = {
             "binär": (
                 "--- DEZIMAL -> BINÄR (Modulo-Methode) ---\n\n"
@@ -371,17 +371,14 @@ class Mathetrainer(customtkinter.CTk):
             )
         }
 
-
-
-      
         self.aktuelle_zahl = 0
         self.korrektes_ergebnis = 0
-        self.fehler_count = 0  
+        self.fehler_count = 0
         self.sol_net = ""
         self.sol_bc = ""
         self.sol_mask = ""
 
-        self.mode_switch = customtkinter.CTkSwitch(self,text="Dunkelmodus",command=self.change_appearance_mode)
+        self.mode_switch = customtkinter.CTkSwitch(self, text="Dunkelmodus", command=self.change_appearance_mode)
         self.mode_switch.place(relx=0.82, rely=0.05)
 
         self.label = customtkinter.CTkLabel(self, text="Fachinformatiker Mathetrainer", font=("Arial", 24, "bold"))
@@ -402,7 +399,10 @@ class Mathetrainer(customtkinter.CTk):
         self.netzplan_frame = customtkinter.CTkFrame(self)
         self.gantt_frame = customtkinter.CTkFrame(self)
 
-        self.alle_frames = [self.main_menu_frame, self.binär_frame, self.hex_frame,self.speicher_frame, self.download_frame, self.elektro_frame, self.subnet_frame, self.kalk_frame, self.raid_frame,self.storage_frame,self.availability_frame,self.netzplan_frame,self.gantt_frame]
+        self.alle_frames = [self.main_menu_frame, self.binär_frame, self.hex_frame, self.speicher_frame,
+                            self.download_frame, self.elektro_frame, self.subnet_frame, self.kalk_frame,
+                            self.raid_frame, self.storage_frame, self.availability_frame, self.netzplan_frame,
+                            self.gantt_frame]
 
         # UI Setups
         self.setup_main_menu()
@@ -419,26 +419,28 @@ class Mathetrainer(customtkinter.CTk):
         self.setup_netzplan_screen()
         self.setup_gantt_screen()
 
-
-
-
         # "Zurück" und "Skip" Buttons für alle Trainer-Screens
         for seite in self.alle_frames[1:]:
             nav_frame = customtkinter.CTkFrame(seite, fg_color="transparent")
             nav_frame.pack(side="bottom", pady=20)
 
             # Rechner Button
-            customtkinter.CTkButton(nav_frame, text="Rechner 🖩", command=self.toggle_taschenrechner,width=100, fg_color="#333333").pack(side="left", padx=5)
+            customtkinter.CTkButton(nav_frame, text="Rechner 🖩", command=self.toggle_taschenrechner, width=100,
+                                    fg_color="#333333").pack(side="left", padx=5)
 
-            #Hilfe Button
-            customtkinter.CTkButton(nav_frame, text="Erklärung 💡", command=self.toggle_hilfe,width=100, fg_color="#1f6aa5").pack(side="left", padx=5)
+            # Hilfe Button
+            customtkinter.CTkButton(nav_frame, text="Erklärung 💡", command=self.toggle_hilfe, width=100,
+                                    fg_color="#1f6aa5").pack(side="left", padx=5)
 
             # Notizblock Button
-            customtkinter.CTkButton(nav_frame, text="Rechenweg 📝", command=self.toggle_notizblock,width=100, fg_color="#333333").pack(side="left", padx=5)
+            customtkinter.CTkButton(nav_frame, text="Rechenweg 📝", command=self.toggle_notizblock, width=100,
+                                    fg_color="#333333").pack(side="left", padx=5)
 
             # Restliche Buttons
-            customtkinter.CTkButton(nav_frame, text="Überspringen ↻", command=self.skip_aufgabe,width=130, fg_color="#A9711C").pack(side="left", padx=5)
-            customtkinter.CTkButton(nav_frame, text="Menü", command=self.zurück_zum_menü,width=100, fg_color="#555555").pack(side="left", padx=5)
+            customtkinter.CTkButton(nav_frame, text="Überspringen ↻", command=self.skip_aufgabe, width=130,
+                                    fg_color="#A9711C").pack(side="left", padx=5)
+            customtkinter.CTkButton(nav_frame, text="Menü", command=self.zurück_zum_menü, width=100,
+                                    fg_color="#555555").pack(side="left", padx=5)
 
         self.zurück_zum_menü()
 
@@ -470,7 +472,6 @@ class Mathetrainer(customtkinter.CTk):
         elif self.gantt_frame.winfo_viewable():
             self.neue_gantt_aufgabe()
 
-
     def reset_fehler(self):
         self.fehler_count = 0
 
@@ -496,14 +497,14 @@ class Mathetrainer(customtkinter.CTk):
         self.button_container.pack(expand=True)
 
         # Titel im Hauptmenü
-        customtkinter.CTkLabel(self.button_container,text="Wähle ein Trainingsmodul",font=("Arial", 22, "bold")).pack(pady=(0, 20))
+        customtkinter.CTkLabel(self.button_container, text="Wähle ein Trainingsmodul", font=("Arial", 22, "bold")).pack(
+            pady=(0, 20))
 
         # Einheitliche Konfiguration für alle Buttons
         btn_width = 300
         btn_height = 45
         standard_color = "#2c3e50"
         hover_color = "#34495e"
-
 
         # Liste der Module für eine saubere Erstellung
         module = [
@@ -514,19 +515,19 @@ class Mathetrainer(customtkinter.CTk):
             ("Elektrotechnik (U, I, R, P)", self.show_elektro_trainer),
             ("Subnetting", self.show_subnet_trainer),
             ("Handelskalkulation", self.show_kalk_trainer),
-            ("RAID", self.show_raid_trainer),  
+            ("RAID", self.show_raid_trainer),
             ("Speicherbedarf", self.show_storage_trainer),
             ("Verfügbarkeit", self.show_availability_trainer),
             ("Netzplan", self.show_netzplan_trainer),
             ("Gantt-Diagramm", self.show_gantt_trainer),
         ]
 
-
         for text, befehl in module:
-            customtkinter.CTkButton(self.button_container,text=text,command=befehl,width=btn_width,height=btn_height,fg_color=standard_color,hover_color=hover_color,font=("Arial", 14)).pack(pady=8)
+            customtkinter.CTkButton(self.button_container, text=text, command=befehl, width=btn_width,
+                                    height=btn_height, fg_color=standard_color, hover_color=hover_color,
+                                    font=("Arial", 14)).pack(pady=8)
 
     # --- NAVIGATIONS-FUNKTIONEN ---
-
 
     def show_binär_trainer(self):
         self.verstecke_alle_frames()
@@ -544,7 +545,6 @@ class Mathetrainer(customtkinter.CTk):
         self.speicher_frame.pack(fill="both", expand=True)
         self.neue_speicher_aufgabe()
 
-
     def show_download_trainer(self):
         self.verstecke_alle_frames()
         self.download_frame.pack(fill="both", expand=True)
@@ -557,7 +557,6 @@ class Mathetrainer(customtkinter.CTk):
         self.neue_storage_aufgabe()
         self.after(100, lambda: self.st_entry.focus())
 
-
     def show_elektro_trainer(self):
         self.verstecke_alle_frames()
         self.elektro_frame.pack(fill="both", expand=True)
@@ -568,7 +567,6 @@ class Mathetrainer(customtkinter.CTk):
         self.subnet_frame.pack(fill="both", expand=True, padx=20, pady=20)
         self.label.configure(text="Subnetting-Trainer")
         self.neue_subnet_aufgabe()
-
 
     def show_kalk_trainer(self):
         self.verstecke_alle_frames()
@@ -597,8 +595,6 @@ class Mathetrainer(customtkinter.CTk):
         self.label.configure(text="Gantt-Diagramm Training")
         self.neue_gantt_aufgabe()
 
-
-
     def verstecke_alle_frames(self):
         for frame in self.alle_frames:
             frame.pack_forget()
@@ -614,7 +610,7 @@ class Mathetrainer(customtkinter.CTk):
             self.tr_window.geometry("350x500")
             self.tr_window.attributes("-topmost", True)
             self.tr_window.resizable(False, False)
-            self.setup_rechner_ui() 
+            self.setup_rechner_ui()
             self.tr_window.focus_force()
 
     def setup_rechner_ui(self):
@@ -635,7 +631,7 @@ class Mathetrainer(customtkinter.CTk):
 
         r, c = 1, 0
         for button in buttons:
-            if button == "":  
+            if button == "":
                 c += 1
                 continue
 
@@ -645,7 +641,7 @@ class Mathetrainer(customtkinter.CTk):
             elif button == "C":
                 b_color = "#A82424"
             elif button == "⌫":
-                b_color = "#A9711C"  
+                b_color = "#A9711C"
             else:
                 b_color = None
 
@@ -671,7 +667,6 @@ class Mathetrainer(customtkinter.CTk):
         self.display.configure(state="normal")
         aktuell = self.display.get()
         if aktuell:
-        
             neu = aktuell[:-1]
             self.display.delete(0, "end")
             self.display.insert(0, neu)
@@ -772,21 +767,20 @@ class Mathetrainer(customtkinter.CTk):
 
             # Button zum schnellen Löschen
             customtkinter.CTkButton(self.note_window, text="Alles löschen",
-                                     command=lambda: self.notiz_text.delete("1.0", "end"),
-                                     fg_color="#A82424").pack(pady=5)
+                                    command=lambda: self.notiz_text.delete("1.0", "end"),
+                                    fg_color="#A82424").pack(pady=5)
 
             self.note_window.focus_force()
-
-
 
     # --- BINÄR ---
 
     def setup_binär_screen(self):
-        self.bin_modus_switch = customtkinter.CTkSegmentedButton(self.binär_frame,values=["Dez -> Bin", "Bin -> Dez"],command=self.neue_binär_aufgabe)
+        self.bin_modus_switch = customtkinter.CTkSegmentedButton(self.binär_frame, values=["Dez -> Bin", "Bin -> Dez"],
+                                                                 command=self.neue_binär_aufgabe)
         self.bin_modus_switch.set("Dez -> Bin")
         self.bin_modus_switch.pack(pady=10)
 
-        self.bin_aufgaben_label = customtkinter.CTkLabel(self.binär_frame,text="",font=("Arial", 20))
+        self.bin_aufgaben_label = customtkinter.CTkLabel(self.binär_frame, text="", font=("Arial", 20))
         self.bin_aufgaben_label.pack(pady=20)
 
         self.bin_entry = customtkinter.CTkEntry(self.binär_frame, width=250)
@@ -796,14 +790,14 @@ class Mathetrainer(customtkinter.CTk):
         self.bin_feedback_label = customtkinter.CTkLabel(self.binär_frame, text="")
         self.bin_feedback_label.pack(pady=10)
 
-
         self.bin_btn_frame = customtkinter.CTkFrame(self.binär_frame, fg_color="transparent")
         self.bin_btn_frame.pack(pady=10)
 
-        self.bin_prüfen_button = customtkinter.CTkButton(self.bin_btn_frame,text="Prüfen",command=self.binär_prüfen)
+        self.bin_prüfen_button = customtkinter.CTkButton(self.bin_btn_frame, text="Prüfen", command=self.binär_prüfen)
         self.bin_prüfen_button.pack(side="left", padx=5)
 
-        self.bin_next_button = customtkinter.CTkButton(self.bin_btn_frame,text="Nächste Aufgabe",command=self.neue_binär_aufgabe,fg_color="green")
+        self.bin_next_button = customtkinter.CTkButton(self.bin_btn_frame, text="Nächste Aufgabe",
+                                                       command=self.neue_binär_aufgabe, fg_color="green")
 
         self.neue_binär_aufgabe()
         self.after(200, lambda: self.bin_entry.focus())
@@ -815,7 +809,8 @@ class Mathetrainer(customtkinter.CTk):
         self.bin_feedback_label.configure(text="")
         self.bin_next_button.pack_forget()
         modus = self.bin_modus_switch.get()
-        self.bin_aufgaben_label.configure(text=f"Dezimal: {self.aktuelle_zahl}" if modus == "Dez -> Bin" else f"Binär: {bin(self.aktuelle_zahl)[2:]}")
+        self.bin_aufgaben_label.configure(
+            text=f"Dezimal: {self.aktuelle_zahl}" if modus == "Dez -> Bin" else f"Binär: {bin(self.aktuelle_zahl)[2:]}")
 
         if hasattr(self, 'bin_entry'):
             self.bin_entry.delete(0, "end")
@@ -826,7 +821,8 @@ class Mathetrainer(customtkinter.CTk):
             eingabe = self.bin_entry.get().strip()
             if not eingabe: raise ValueError
 
-            korrekt = bin(self.aktuelle_zahl)[2:] if self.bin_modus_switch.get() == "Dez -> Bin" else str(self.aktuelle_zahl)
+            korrekt = bin(self.aktuelle_zahl)[2:] if self.bin_modus_switch.get() == "Dez -> Bin" else str(
+                self.aktuelle_zahl)
 
             if eingabe == korrekt:
                 self.bin_feedback_label.configure(text="Richtig!", text_color="green")
@@ -844,11 +840,13 @@ class Mathetrainer(customtkinter.CTk):
     # --- HEX ---
 
     def setup_hex_screen(self):
-        self.hex_modus_switch = customtkinter.CTkSegmentedButton(self.hex_frame,values=["Hex -> Dez", "Dez -> Hex", "Hex -> Bin", "Bin -> Hex"],command=self.neue_hex_aufgabe)
+        self.hex_modus_switch = customtkinter.CTkSegmentedButton(self.hex_frame,
+                                                                 values=["Hex -> Dez", "Dez -> Hex", "Hex -> Bin",
+                                                                         "Bin -> Hex"], command=self.neue_hex_aufgabe)
         self.hex_modus_switch.set("Hex -> Dez")
         self.hex_modus_switch.pack(pady=10)
 
-        self.hex_aufgaben_label = customtkinter.CTkLabel(self.hex_frame,text="",font=("Arial", 20))
+        self.hex_aufgaben_label = customtkinter.CTkLabel(self.hex_frame, text="", font=("Arial", 20))
         self.hex_aufgaben_label.pack(pady=20)
 
         self.hex_entry = customtkinter.CTkEntry(self.hex_frame, width=250)
@@ -861,10 +859,11 @@ class Mathetrainer(customtkinter.CTk):
         self.hex_btn_frame = customtkinter.CTkFrame(self.hex_frame, fg_color="transparent")
         self.hex_btn_frame.pack(pady=10)
 
-        self.hex_prüfen_button = customtkinter.CTkButton(self.hex_btn_frame,text="Prüfen",command=self.hex_prüfen)
+        self.hex_prüfen_button = customtkinter.CTkButton(self.hex_btn_frame, text="Prüfen", command=self.hex_prüfen)
         self.hex_prüfen_button.pack(side="left", padx=5)
 
-        self.hex_next_button = customtkinter.CTkButton(self.hex_btn_frame,text="Nächste Aufgabe",command=self.neue_hex_aufgabe,fg_color="green")
+        self.hex_next_button = customtkinter.CTkButton(self.hex_btn_frame, text="Nächste Aufgabe",
+                                                       command=self.neue_hex_aufgabe, fg_color="green")
 
         self.neue_hex_aufgabe()
         self.after(200, lambda: self.hex_entry.focus())
@@ -905,11 +904,13 @@ class Mathetrainer(customtkinter.CTk):
         except (ValueError, KeyError):
             self.hex_feedback_label.configure(text="Bitte gültige Eingabe machen!", text_color="orange")
 
-
     # --- SPEICHER ---
 
     def setup_speicher_screen(self):
-        self.speicher_typ_switch = customtkinter.CTkSegmentedButton(self.speicher_frame,values=["Binär (1024)", "Dezimal (1000)","Wechsel"],command=self.neue_speicher_aufgabe)
+        self.speicher_typ_switch = customtkinter.CTkSegmentedButton(self.speicher_frame,
+                                                                    values=["Binär (1024)", "Dezimal (1000)",
+                                                                            "Wechsel"],
+                                                                    command=self.neue_speicher_aufgabe)
         self.speicher_typ_switch.set("Binär (1024)")
         self.speicher_typ_switch.pack(pady=10)
         self.speicher_aufgaben_label = customtkinter.CTkLabel(self.speicher_frame, text="", font=("Arial", 18))
@@ -925,20 +926,20 @@ class Mathetrainer(customtkinter.CTk):
         self.speicher_btn_frame = customtkinter.CTkFrame(self.speicher_frame, fg_color="transparent")
         self.speicher_btn_frame.pack(pady=10)
 
-        self.speicher_prüfen_button = customtkinter.CTkButton(self.speicher_btn_frame, text="Prüfen",command=self.speicher_prüfen)
+        self.speicher_prüfen_button = customtkinter.CTkButton(self.speicher_btn_frame, text="Prüfen",
+                                                              command=self.speicher_prüfen)
         self.speicher_prüfen_button.pack(side="left", padx=5)
 
-        self.speicher_next_button = customtkinter.CTkButton(self.speicher_btn_frame, text="Nächste Aufgabe",command=self.neue_speicher_aufgabe, fg_color="green")
+        self.speicher_next_button = customtkinter.CTkButton(self.speicher_btn_frame, text="Nächste Aufgabe",
+                                                            command=self.neue_speicher_aufgabe, fg_color="green")
 
     def neue_speicher_aufgabe(self, modus_auswahl=None):
 
         self.reset_fehler()
 
-
         self.speicher_entry.delete(0, "end")
         self.speicher_feedback_label.configure(text="")
         self.speicher_next_button.pack_forget()
-
 
         if modus_auswahl is None or isinstance(modus_auswahl, (int, float)):
             modus_auswahl = self.speicher_typ_switch.get()
@@ -946,12 +947,10 @@ class Mathetrainer(customtkinter.CTk):
         einheiten_bin = ["Byte", "KiB", "MiB", "GiB", "TiB"]
         einheiten_dez = ["Byte", "KB", "MB", "GB", "TB"]
 
-
         idx_von = random.randint(0, 4)
         idx_zu = random.randint(0, 4)
         while idx_von == idx_zu:
             idx_zu = random.randint(0, 4)
-
 
         if "Binär" in modus_auswahl:
             basis = 1024
@@ -990,7 +989,8 @@ class Mathetrainer(customtkinter.CTk):
         self.aktuelle_stellen = 4 if self.korrektes_ergebnis < 1 else 2
         anzeige_zahl = format(self.aktuelle_zahl, 'f').rstrip('0').rstrip('.')
 
-        self.speicher_aufgaben_label.configure(text=f"Wandle {anzeige_zahl} {einh_v[idx_von]} in {einh_z[idx_zu]} um:\n"f"(Auf {self.aktuelle_stellen} Stellen runden)")
+        self.speicher_aufgaben_label.configure(
+            text=f"Wandle {anzeige_zahl} {einh_v[idx_von]} in {einh_z[idx_zu]} um:\n"f"(Auf {self.aktuelle_stellen} Stellen runden)")
 
         self.speicher_entry.focus()
 
@@ -1016,12 +1016,10 @@ class Mathetrainer(customtkinter.CTk):
         except ValueError:
             self.speicher_feedback_label.configure(text="Bitte eine Zahl eingeben!", text_color="orange")
 
-
-    def setup_storage_screen(self):
+    def setup_storage_screen(self, _=None):
         if hasattr(self, 'st_label'): return
 
-        self.st_label = customtkinter.CTkLabel(self.storage_frame, text="Speicherbedarf berechnen",
-                                               font=("Arial", 22, "bold"))
+        self.st_label = customtkinter.CTkLabel(self.storage_frame, text="Speicherbedarf berechnen",font=("Arial", 22, "bold"))
         self.st_label.pack(pady=20)
 
         self.st_aufgaben_label = customtkinter.CTkLabel(self.storage_frame, text="", font=("Arial", 18))
@@ -1041,9 +1039,9 @@ class Mathetrainer(customtkinter.CTk):
         self.st_pruefen_btn = customtkinter.CTkButton(self.st_btn_frame, text="Prüfen", command=self.storage_prüfen)
         self.st_pruefen_btn.pack(side="left", padx=5)
 
-        self.st_next = customtkinter.CTkButton(self.st_btn_frame,text="Nächste Aufgabe",command=self.neue_storage_aufgabe,fg_color="green")
+        self.st_next = customtkinter.CTkButton(self.st_btn_frame, text="Nächste Aufgabe",command=self.neue_storage_aufgabe, fg_color="green")
 
-    def neue_storage_aufgabe(self):
+    def neue_storage_aufgabe(self, _=None):
         self.fehler_count = 0
         self.st_next.pack_forget()
         self.st_feedback.configure(text="", fg_color="transparent")
@@ -1060,8 +1058,9 @@ class Mathetrainer(customtkinter.CTk):
             # Formel: (Pixel * Bit) / 8 / 1024 / 1024 = MB
             self.korrektes_ergebnis = round((breite * höhe * bit) / 8 / 1024 / 1024, 2)
 
-            self.st_aufgaben_label.configure(text=f"Typ: Bilddatei\nAuflösung: {breite} x {höhe} Pixel\nFarbtiefe: {bit} Bit\n\nBerechne die Dateigröße in MB (unkomprimiert)!")
-            self.st_entry.configure(placeholder_text="Ergebnis in MB...")
+            self.st_aufgaben_label.configure(
+                text=f"Typ: Bilddatei\nAuflösung: {breite} x {höhe} Pixel\nFarbtiefe: {bit} Bit\n\nBerechne die Dateigröße in MB (unkomprimiert)!")
+
 
         else:
             # Werte für ein Video würfeln
@@ -1071,8 +1070,9 @@ class Mathetrainer(customtkinter.CTk):
             # Formel: (Sekunden * Mbit) / 8 / 1024 = GB
             self.korrektes_ergebnis = round((minuten * 60 * bitrate) / 8 / 1024, 2)
 
-            self.st_aufgaben_label.configure(text=f"Typ: Videodatei\nDauer: {minuten} Minuten\nBitrate: {bitrate} Mbit/s\n\nBerechne den Speicherbedarf in GB!")
-            self.st_entry.configure(placeholder_text="Ergebnis in GB...")
+            self.st_aufgaben_label.configure(
+                text=f"Typ: Videodatei\nDauer: {minuten} Minuten\nBitrate: {bitrate} Mbit/s\n\nBerechne den Speicherbedarf in GB!")
+
 
         self.after(100, self.st_entry.focus)
 
@@ -1083,16 +1083,19 @@ class Mathetrainer(customtkinter.CTk):
             einheit = "MB" if "MB" in self.st_aufgaben_label.cget("text") else "GB"
 
             if abs(val - self.korrektes_ergebnis) < 0.1:
-                self.st_feedback.configure(text="Richtig! Sauber berechnet.", text_color="green",fg_color="transparent")
+                self.st_feedback.configure(text="Richtig! Sauber berechnet.", text_color="green",
+                                           fg_color="transparent")
                 self.st_next.pack(side="left", padx=5)
                 self.fehler_count = 0
             else:
                 self.fehler_count += 1
                 if self.fehler_count >= 3:
-                    self.st_feedback.configure(text=f"Falsch! Lösung: {self.korrektes_ergebnis} {einheit}",text_color="red", fg_color="transparent")
+                    self.st_feedback.configure(text=f"Falsch! Lösung: {self.korrektes_ergebnis} {einheit}",
+                                               text_color="red", fg_color="transparent")
                     self.st_next.pack(side="left", padx=5)
                 else:
-                    self.st_feedback.configure(text="Falsch! Versuchs nochmal.", text_color="red",fg_color="transparent")
+                    self.st_feedback.configure(text="Falsch! Versuchs nochmal.", text_color="red",
+                                               fg_color="transparent")
         except ValueError:
             self.st_feedback.configure(text="Bitte eine Zahl eingeben!", text_color="orange", fg_color="transparent")
 
@@ -1121,8 +1124,8 @@ class Mathetrainer(customtkinter.CTk):
         self.dl_prüfen_button = customtkinter.CTkButton(self.dl_btn_frame, text="Prüfen", command=self.download_prüfen)
         self.dl_prüfen_button.pack(side="left", padx=5)
 
-        self.dl_next = customtkinter.CTkButton(self.dl_btn_frame,text="Nächste Aufgabe",command=self.neue_download_aufgabe,fg_color="green")
-
+        self.dl_next = customtkinter.CTkButton(self.dl_btn_frame, text="Nächste Aufgabe",
+                                               command=self.neue_download_aufgabe, fg_color="green")
 
         self.neue_download_aufgabe()
         self.after(200, lambda: self.dl_entry.focus())
@@ -1144,11 +1147,10 @@ class Mathetrainer(customtkinter.CTk):
             self.korrektes_ergebnis = sekunden_gesamt / 60
 
         self.dl_label.configure(text=f"Datei: {gb} GB\nLeitung: {mbit} Mbit/s\n\n"
-                 f"Berechne die Dauer in {self.aktuelle_einheit}:\n"
-                 f"(Auf 2 Stellen runden)")
+                                     f"Berechne die Dauer in {self.aktuelle_einheit}:\n"
+                                     f"(Auf 2 Stellen runden)")
 
         self.dl_entry.delete(0, "end")
-        self.dl_entry.configure(placeholder_text=f"{self.aktuelle_einheit}...")
         self.dl_feedback.configure(text="")
         self.dl_next.pack_forget()
 
@@ -1166,7 +1168,8 @@ class Mathetrainer(customtkinter.CTk):
                 if self.fehler_count < 3:
                     self.dl_feedback.configure(text="Falsch! Versuch es nochmal.", text_color="red")
                 else:
-                    self.dl_feedback.configure(text=f"Falsch! Lösung: ca. {int(self.korrektes_ergebnis)}s",text_color="red")
+                    self.dl_feedback.configure(text=f"Falsch! Lösung: ca. {int(self.korrektes_ergebnis)}s",
+                                               text_color="red")
                     self.dl_next.pack(side="left", padx=5)
         except ValueError:
             self.dl_feedback.configure(text="Bitte eine Zahl eingeben!", text_color="orange")
@@ -1192,11 +1195,14 @@ class Mathetrainer(customtkinter.CTk):
         self.fehler_count = 0
         self.korrektes_ergebnis = 0
 
-        self.el_modus_switch = customtkinter.CTkSegmentedButton(self.elektro_frame,values=["R = U / I", "I = P / U", "U = R * I", "P = U * I"],command=self.neue_elektro_aufgabe)
+        self.el_modus_switch = customtkinter.CTkSegmentedButton(self.elektro_frame,
+                                                                values=["R = U / I", "I = P / U", "U = R * I",
+                                                                        "P = U * I"], command=self.neue_elektro_aufgabe)
         self.el_modus_switch.set("R = U / I")
         self.el_modus_switch.pack(pady=10)
 
-        self.el_label = customtkinter.CTkLabel(self.elektro_frame, text="", font=("Arial", 14), justify="left",wraplength=450)
+        self.el_label = customtkinter.CTkLabel(self.elektro_frame, text="", font=("Arial", 14), justify="left",
+                                               wraplength=450)
         self.el_label.pack(pady=20)
 
         self.entry_container = customtkinter.CTkFrame(self.elektro_frame, fg_color="transparent")
@@ -1215,10 +1221,12 @@ class Mathetrainer(customtkinter.CTk):
         self.el_btn_frame = customtkinter.CTkFrame(self.elektro_frame, fg_color="transparent")
         self.el_btn_frame.pack(pady=10)
 
-        self.el_prüfen_button = customtkinter.CTkButton(self.el_btn_frame, text="Auftrag prüfen",command=self.elektro_prüfen)
+        self.el_prüfen_button = customtkinter.CTkButton(self.el_btn_frame, text="Auftrag prüfen",
+                                                        command=self.elektro_prüfen)
         self.el_prüfen_button.pack(side="left", padx=5)
 
-        self.el_next = customtkinter.CTkButton(self.el_btn_frame, text="Nächster Auftrag",command=self.neue_elektro_aufgabe, fg_color="green")
+        self.el_next = customtkinter.CTkButton(self.el_btn_frame, text="Nächster Auftrag",
+                                               command=self.neue_elektro_aufgabe, fg_color="green")
 
     def neue_elektro_aufgabe(self, _=None):
         self.el_entry.delete(0, "end")
@@ -1295,7 +1303,8 @@ class Mathetrainer(customtkinter.CTk):
                     verbleibend = 3 - self.fehler_count
                     self.el_feedback.configure(text=f"❌ Falsch! Noch {verbleibend} Versuche.", text_color="red")
                 else:
-                    self.el_feedback.configure(text=f"❌ Lösung: {self.korrektes_ergebnis} {self.el_unit_label.cget('text')}", text_color="red")
+                    self.el_feedback.configure(
+                        text=f"❌ Lösung: {self.korrektes_ergebnis} {self.el_unit_label.cget('text')}", text_color="red")
                     self.el_next.pack(side="left", padx=5)
                     self.el_entry.unbind("<Return>")
 
@@ -1305,17 +1314,22 @@ class Mathetrainer(customtkinter.CTk):
     # --- SUBNETTING ---
 
     def setup_subnet_screen(self):
-        self.sn_label = customtkinter.CTkLabel(self.subnet_frame, text="Subnetting-Trainer",font=("Arial", 24, "bold"))
+        self.sn_label = customtkinter.CTkLabel(self.subnet_frame, text="Subnetting-Trainer", font=("Arial", 24, "bold"))
         self.sn_label.pack(pady=(20, 10))
 
-        self.sn_modus_switch = customtkinter.CTkSegmentedButton(self.subnet_frame,values=["Standard", "Planung", "Analyse", "Segmentierung"],command=lambda m: self.neue_subnet_aufgabe())
+        self.sn_modus_switch = customtkinter.CTkSegmentedButton(self.subnet_frame,
+                                                                values=["Standard", "Planung", "Analyse",
+                                                                        "Segmentierung"],
+                                                                command=lambda m: self.neue_subnet_aufgabe())
         self.sn_modus_switch.set("Standard")
         self.sn_modus_switch.pack(pady=10)
 
-        self.sn_instruktion = customtkinter.CTkLabel(self.subnet_frame, text="Lade Aufgabe...", font=("Arial", 14),wraplength=550, justify="center")
+        self.sn_instruktion = customtkinter.CTkLabel(self.subnet_frame, text="Lade Aufgabe...", font=("Arial", 14),
+                                                     wraplength=550, justify="center")
         self.sn_instruktion.pack(pady=(0, 20))
 
-        self.sn_scroll_container = customtkinter.CTkScrollableFrame(self.subnet_frame, width=600, height=380, fg_color="transparent")
+        self.sn_scroll_container = customtkinter.CTkScrollableFrame(self.subnet_frame, width=600, height=380,
+                                                                    fg_color="transparent")
         self.sn_scroll_container.pack(pady=10, fill="both", expand=True)
         self.sn_entries = {}
         self.sn_feedback = customtkinter.CTkLabel(self.subnet_frame, text="")
@@ -1324,7 +1338,8 @@ class Mathetrainer(customtkinter.CTk):
         self.sn_btn_container.pack(pady=10)
         self.sn_pruefen_btn = customtkinter.CTkButton(self.sn_btn_container, text="Prüfen", command=self.subnet_prüfen)
         self.sn_pruefen_btn.pack(side="left", padx=5)
-        self.sn_next = customtkinter.CTkButton(self.sn_btn_container, text="Nächste Aufgabe",command=self.neue_subnet_aufgabe, fg_color="green")
+        self.sn_next = customtkinter.CTkButton(self.sn_btn_container, text="Nächste Aufgabe",
+                                               command=self.neue_subnet_aufgabe, fg_color="green")
         self.neue_subnet_aufgabe()
 
     def neue_subnet_aufgabe(self):
@@ -1486,7 +1501,9 @@ class Mathetrainer(customtkinter.CTk):
     # --- Handelskalkulation ---
     def setup_kalkulation_screen(self):
 
-        self.kalk_modus_switch = customtkinter.CTkSegmentedButton(self.kalk_frame,values=["Vorwärtskalkulation", "Rückwärtskalkulation"],command=self.neue_kalk_aufgabe)
+        self.kalk_modus_switch = customtkinter.CTkSegmentedButton(self.kalk_frame, values=["Vorwärtskalkulation",
+                                                                                           "Rückwärtskalkulation"],
+                                                                  command=self.neue_kalk_aufgabe)
         self.kalk_modus_switch.set("Vorwärtskalkulation")
         self.kalk_modus_switch.pack(pady=10)
 
@@ -1499,13 +1516,14 @@ class Mathetrainer(customtkinter.CTk):
         self.kalk_button_frame = customtkinter.CTkFrame(self.kalk_frame, fg_color="transparent")
         self.kalk_button_frame.pack(pady=10)
 
-        customtkinter.CTkButton(self.kalk_button_frame, text="Prüfen", command=self.kalk_prüfen).pack(side="left",padx=5)
-        self.kalk_next = customtkinter.CTkButton(self.kalk_button_frame,text="Nächste Aufgabe",command=self.neue_kalk_aufgabe,fg_color="green")
+        customtkinter.CTkButton(self.kalk_button_frame, text="Prüfen", command=self.kalk_prüfen).pack(side="left",
+                                                                                                      padx=5)
+        self.kalk_next = customtkinter.CTkButton(self.kalk_button_frame, text="Nächste Aufgabe",
+                                                 command=self.neue_kalk_aufgabe, fg_color="green")
 
         self.neue_kalk_aufgabe()
 
         self.after(200, self.fokus_auf_erstes_kalk_feld)
-
 
     def reset_fehler(self):
         self.fehler_count = 0
@@ -1561,14 +1579,14 @@ class Mathetrainer(customtkinter.CTk):
             start_wert = Decimal(str(random.randint(300, 2000))).quantize(Decimal("0.01"))
             self.berechne_kalkulation(start_wert, vorwaerts=False)
 
-
         self.kalk_entries = []
         for i, zeile in enumerate(self.kalk_daten):
             lbl_text = zeile["label"]
             if "fix_betrag" in zeile:
                 lbl_text += f" ({zeile['fix_betrag']:.2f} €)"
 
-            customtkinter.CTkLabel(self.tabelle_container, text=lbl_text, anchor="w", width=200).grid(row=i, column=0,padx=5, pady=2)
+            customtkinter.CTkLabel(self.tabelle_container, text=lbl_text, anchor="w", width=200).grid(row=i, column=0,
+                                                                                                      padx=5, pady=2)
 
             p_text = f"{zeile['proz']}%" if zeile.get('proz') else ""
             customtkinter.CTkLabel(self.tabelle_container, text=p_text, width=50).grid(row=i, column=1, padx=5, pady=2)
@@ -1584,7 +1602,6 @@ class Mathetrainer(customtkinter.CTk):
 
             if hasattr(self, 'kalk_entries') and self.kalk_entries:
                 self.kalk_entries[0].focus()
-
 
             self.kalk_entries.append(entry)
 
@@ -1686,12 +1703,14 @@ class Mathetrainer(customtkinter.CTk):
         self.raid_label = customtkinter.CTkLabel(self.raid_frame, text="", font=("Arial", 18), justify="left")
         self.raid_label.pack(pady=20)
 
-        self.raid_entry_cap = customtkinter.CTkEntry(self.raid_frame, width=250,placeholder_text="Nutzbare Kapazität in TB...")
+        self.raid_entry_cap = customtkinter.CTkEntry(self.raid_frame, width=250,
+                                                     placeholder_text="Nutzbare Kapazität in TB...")
         self.raid_entry_cap.pack(pady=5)
 
         self.raid_entry_cap.bind("<Return>", lambda e: self.raid_entry_fault.focus())
 
-        self.raid_entry_fault = customtkinter.CTkEntry(self.raid_frame, width=250,placeholder_text="Wie viele Platten dürfen ausfallen?...")
+        self.raid_entry_fault = customtkinter.CTkEntry(self.raid_frame, width=250,
+                                                       placeholder_text="Wie viele Platten dürfen ausfallen?...")
         self.raid_entry_fault.pack(pady=5)
 
         self.raid_entry_fault.bind("<Return>", self.raid_prüfen)
@@ -1702,10 +1721,12 @@ class Mathetrainer(customtkinter.CTk):
         self.raid_btn_container = customtkinter.CTkFrame(self.raid_frame, fg_color="transparent")
         self.raid_btn_container.pack(pady=10)
 
-        self.raid_pruefen_btn = customtkinter.CTkButton(self.raid_btn_container, text="Prüfen",command=self.raid_prüfen)
+        self.raid_pruefen_btn = customtkinter.CTkButton(self.raid_btn_container, text="Prüfen",
+                                                        command=self.raid_prüfen)
         self.raid_pruefen_btn.pack(side="left", padx=5)
 
-        self.raid_next = customtkinter.CTkButton(self.raid_btn_container, text="Nächste Aufgabe",command=self.neue_raid_aufgabe, fg_color="green")
+        self.raid_next = customtkinter.CTkButton(self.raid_btn_container, text="Nächste Aufgabe",
+                                                 command=self.neue_raid_aufgabe, fg_color="green")
 
     def neue_raid_aufgabe(self):
         self.reset_fehler()
@@ -1777,10 +1798,14 @@ class Mathetrainer(customtkinter.CTk):
     def setup_availability_screen(self):
         if hasattr(self, 'av_label'): return
 
-        self.av_label = customtkinter.CTkLabel(self.availability_frame, text="Verfügbarkeits-Rechner", font=("Arial", 22, "bold"))
+        self.av_label = customtkinter.CTkLabel(self.availability_frame, text="Verfügbarkeits-Rechner",
+                                               font=("Arial", 22, "bold"))
         self.av_label.pack(pady=10)
 
-        self.av_modus_switch = customtkinter.CTkSegmentedButton(self.availability_frame,values=["Ausfallzeit berechnen", "% Verfügbarkeit berechnen"],command=self.neue_availability_aufgabe)
+        self.av_modus_switch = customtkinter.CTkSegmentedButton(self.availability_frame,
+                                                                values=["Ausfallzeit berechnen",
+                                                                        "% Verfügbarkeit berechnen"],
+                                                                command=self.neue_availability_aufgabe)
         self.av_modus_switch.set("Ausfallzeit berechnen")
         self.av_modus_switch.pack(pady=10)
 
@@ -1797,11 +1822,12 @@ class Mathetrainer(customtkinter.CTk):
         self.av_btn_frame = customtkinter.CTkFrame(self.availability_frame, fg_color="transparent")
         self.av_btn_frame.pack(pady=10)
 
-        self.av_pruefen_btn = customtkinter.CTkButton(self.av_btn_frame, text="Prüfen", command=self.availability_prüfen)
+        self.av_pruefen_btn = customtkinter.CTkButton(self.av_btn_frame, text="Prüfen",
+                                                      command=self.availability_prüfen)
         self.av_pruefen_btn.pack(side="left", padx=5)
 
-        self.av_next = customtkinter.CTkButton(self.av_btn_frame,text="Nächste Aufgabe",command=self.neue_availability_aufgabe,fg_color="green")
-
+        self.av_next = customtkinter.CTkButton(self.av_btn_frame, text="Nächste Aufgabe",
+                                               command=self.neue_availability_aufgabe, fg_color="green")
 
     def neue_availability_aufgabe(self, *args):
         self.fehler_count = 0
@@ -1826,16 +1852,18 @@ class Mathetrainer(customtkinter.CTk):
             prozent = random.choice([99.0, 99.5, 99.9, 99.95, 99.99])
             self.korrektes_ergebnis = round((100 - prozent) / 100 * minuten_gesamt, 2)
 
-            self.av_aufgaben_label.configure(text=f"SLA-Level: {prozent}%\nBezugszeitraum: {zeit_text}\n\nMax. zulässige Ausfallzeit in Minuten?")
-            self.av_entry.configure(placeholder_text="Minuten...")
+            self.av_aufgaben_label.configure(
+                text=f"SLA-Level: {prozent}%\nBezugszeitraum: {zeit_text}\n\nMax. zulässige Ausfallzeit in Minuten?")
+
         else:
             ausfall = random.randint(30, 600)
             if "Quartal" in zeit_text: ausfall *= 2
             if "Jahr" in zeit_text: ausfall *= 4
 
             self.korrektes_ergebnis = round((1 - (ausfall / minuten_gesamt)) * 100, 3)
-            self.av_aufgaben_label.configure(text=f"Protokoll-Check:\nIm Zeitraum '{zeit_text}' gab es\ninsgesamt {ausfall} Minuten Downtime.\n\nVerfügbarkeit in %?")
-            self.av_entry.configure(placeholder_text="z.B. 99.123")
+            self.av_aufgaben_label.configure(
+                text=f"Protokoll-Check:\nIm Zeitraum '{zeit_text}' gab es\ninsgesamt {ausfall} Minuten Downtime.\n\nVerfügbarkeit in %?")
+
 
         self.after(100, self.av_entry.focus)
 
@@ -1850,10 +1878,12 @@ class Mathetrainer(customtkinter.CTk):
                 self.fehler_count += 1
                 if self.fehler_count >= 3:
                     einheit = "%" if "%" in self.av_modus_switch.get() else "Min."
-                    self.av_feedback.configure(text=f"Falsch! Lösung: {self.korrektes_ergebnis} {einheit}", text_color="red", fg_color="transparent")
+                    self.av_feedback.configure(text=f"Falsch! Lösung: {self.korrektes_ergebnis} {einheit}",
+                                               text_color="red", fg_color="transparent")
                     self.av_next.pack(side="left", padx=5)
                 else:
-                    self.av_feedback.configure(text="Falsch! Versuch es noch einmal.", text_color="red", fg_color="transparent")
+                    self.av_feedback.configure(text="Falsch! Versuch es noch einmal.", text_color="red",
+                                               fg_color="transparent")
         except ValueError:
             self.av_feedback.configure(text="Bitte eine Zahl eingeben!", text_color="orange", fg_color="transparent")
 
@@ -1861,24 +1891,27 @@ class Mathetrainer(customtkinter.CTk):
         self.np_main_container = customtkinter.CTkFrame(self.netzplan_frame, fg_color="transparent")
         self.np_main_container.pack(fill="both", expand=True)
 
-        self.np_info_label = customtkinter.CTkLabel(self.np_main_container, text="Netzplan",font=("Arial", 20, "bold"))
+        self.np_info_label = customtkinter.CTkLabel(self.np_main_container, text="Netzplan", font=("Arial", 20, "bold"))
         self.np_info_label.pack(pady=10)
 
         self.np_canvas = customtkinter.CTkCanvas(self.np_main_container, height=450, bg="#f5f5f5", highlightthickness=0)
         self.np_canvas.pack(fill="x", padx=20, pady=10)
 
-        self.np_feedback = customtkinter.CTkLabel(self.np_main_container,text="Klicke auf den roten Rahmen/Header der Knoten, um den Kritischen Pfad zu markieren (Gold).",wraplength=600)
+        self.np_feedback = customtkinter.CTkLabel(self.np_main_container,
+                                                  text="Klicke auf den roten Rahmen/Header der Knoten, um den Kritischen Pfad zu markieren (Gold).",
+                                                  wraplength=600)
         self.np_feedback.pack(pady=5)
 
         self.np_btn_frame = customtkinter.CTkFrame(self.np_main_container, fg_color="transparent")
         self.np_btn_frame.pack(pady=10)
 
-        customtkinter.CTkButton(self.np_btn_frame, text="Prüfen", command=self.prüfe_netzplan, fg_color="#1f6aa5").pack(side="left", padx=10)
-
+        customtkinter.CTkButton(self.np_btn_frame, text="Prüfen", command=self.prüfe_netzplan, fg_color="#1f6aa5").pack(
+            side="left", padx=10)
 
     # --- Netzplan ---
     def create_netzplan_node(self, master, nr, name, dauer):
-        container = customtkinter.CTkFrame(master, border_width=2, border_color="#c0392b", fg_color="white",corner_radius=0)
+        container = customtkinter.CTkFrame(master, border_width=2, border_color="#c0392b", fg_color="white",
+                                           corner_radius=0)
 
         header = customtkinter.CTkFrame(container, fg_color="#c0392b", corner_radius=0, height=30)
         header.pack(fill="x")
@@ -1900,10 +1933,11 @@ class Mathetrainer(customtkinter.CTk):
         ]
 
         for key, r, c, hint in config:
-            e = customtkinter.CTkEntry(grid,width=50,height=30,placeholder_text=hint,fg_color="white",text_color="black",border_width=1,border_color="#bbbbbb",font=("Arial", 13, "bold"),justify="center")
+            e = customtkinter.CTkEntry(grid, width=50, height=30, placeholder_text=hint, fg_color="white",
+                                       text_color="black", border_width=1, border_color="#bbbbbb",
+                                       font=("Arial", 13, "bold"), justify="center")
             e.grid(row=r, column=c, padx=1, pady=1)
             fields[key] = e
-
 
         for widget in [container, header, l1, l2, l3, grid]:
             widget.bind("<Button-1>", lambda e, n=container: self.toggle_critical_path(n))
@@ -1965,7 +1999,8 @@ class Mathetrainer(customtkinter.CTk):
             node.is_critical_selected = False
             self.np_canvas.create_window(coords[i], window=node, anchor="nw")
             self.np_knoten_widgets.append(node)
-            self.np_loesungen.append({"faz": faz[i], "fez": fez[i], "saz": saz[i], "sez": sez[i], "gp": gp[i], "fp": fp[i]})
+            self.np_loesungen.append(
+                {"faz": faz[i], "fez": fez[i], "saz": saz[i], "sez": sez[i], "gp": gp[i], "fp": fp[i]})
 
     def toggle_critical_path(self, node):
         node.is_critical_selected = not node.is_critical_selected
@@ -1990,7 +2025,8 @@ class Mathetrainer(customtkinter.CTk):
                 widget.configure(border_color="#c62828")
 
         if not fehler:
-            self.np_feedback.configure(text="✅ Alles richtig! Netzplan und Kritischer Pfad stimmen.", text_color="green")
+            self.np_feedback.configure(text="✅ Alles richtig! Netzplan und Kritischer Pfad stimmen.",
+                                       text_color="green")
         else:
             self.np_feedback.configure(text="❌ Fehler in den Werten oder beim Kritischen Pfad.", text_color="red")
 
@@ -2007,13 +2043,15 @@ class Mathetrainer(customtkinter.CTk):
         self.gantt_entry_container = customtkinter.CTkFrame(self.gantt_input_side, fg_color="transparent")
         self.gantt_entry_container.pack(pady=10, padx=10)
 
-        self.gantt_canvas_fullscreen = customtkinter.CTkCanvas(self.gantt_content_frame, bg="white",highlightthickness=0)
+        self.gantt_canvas_fullscreen = customtkinter.CTkCanvas(self.gantt_content_frame, bg="white",
+                                                               highlightthickness=0)
         self.gantt_canvas_fullscreen.pack(side="left", fill="both", expand=True, pady=10)
 
         self.gantt_hint = customtkinter.CTkLabel(self.gantt_input_side, text="", wraplength=250)
         self.gantt_hint.pack(side="bottom", pady=10)
 
-        customtkinter.CTkButton(self.gantt_input_side, text="Prüfen", command=self.prüfe_gantt,fg_color="#1f6aa5").pack(side="bottom", pady=5)
+        customtkinter.CTkButton(self.gantt_input_side, text="Prüfen", command=self.prüfe_gantt,
+                                fg_color="#1f6aa5").pack(side="bottom", pady=5)
 
     def neue_gantt_aufgabe(self):
         self.gantt_geloest = False
@@ -2037,7 +2075,9 @@ class Mathetrainer(customtkinter.CTk):
 
         self.gantt_daten = []
         for i in range(5):
-            self.gantt_daten.append({"id": ids[i], "name": namen[i], "dauer": d[i], "vorg": vorg[i],"korrekt_faz": zeiten[i][0], "korrekt_fez": zeiten[i][1]})
+            self.gantt_daten.append(
+                {"id": ids[i], "name": namen[i], "dauer": d[i], "vorg": vorg[i], "korrekt_faz": zeiten[i][0],
+                 "korrekt_fez": zeiten[i][1]})
 
         msg = "Modus: BERECHNEN" if self.gantt_modus == 0 else "Modus: ABLESEN"
         self.gantt_hint.configure(text=msg, text_color=("black", "white"))
@@ -2107,7 +2147,7 @@ class Mathetrainer(customtkinter.CTk):
 
         self.update_idletasks()
         c_width = self.gantt_canvas_fullscreen.winfo_width()
-        if c_width < 100: c_width = 700  
+        if c_width < 100: c_width = 700
 
         x_offset = c_width * 0.2
         y_offset = 80
@@ -2124,15 +2164,19 @@ class Mathetrainer(customtkinter.CTk):
         for i, data in enumerate(self.gantt_daten):
             y = y_offset + (i * row_height) + 10
 
-            self.gantt_canvas_fullscreen.create_text(x_offset - 20, y + 15,text=f"{data['id']}: {data['name']}",anchor="e", font=("Arial", 11, "bold"))
+            self.gantt_canvas_fullscreen.create_text(x_offset - 20, y + 15, text=f"{data['id']}: {data['name']}",
+                                                     anchor="e", font=("Arial", 11, "bold"))
 
             if self.gantt_geloest:
                 xs = x_offset + (data["korrekt_faz"] * scale)
                 xe = x_offset + (data["korrekt_fez"] * scale)
-                self.gantt_canvas_fullscreen.create_rectangle(xs, y, xe, y + 30,fill="#3498db", outline="#2471a3")
+                self.gantt_canvas_fullscreen.create_rectangle(xs, y, xe, y + 30, fill="#3498db", outline="#2471a3")
 
 
 if __name__ == "__main__":
     app = Mathetrainer()
     app.mainloop()
 
+#Speicherbedarf
+#Downloadgesch
+#Verfügbarkeit
