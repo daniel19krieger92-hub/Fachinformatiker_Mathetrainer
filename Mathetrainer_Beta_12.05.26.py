@@ -373,15 +373,15 @@ class Mathetrainer(customtkinter.CTk):
 
 
 
-        # Logik-Variablen
+      
         self.aktuelle_zahl = 0
         self.korrektes_ergebnis = 0
-        self.fehler_count = 0  # Counter für Fehlversuche
+        self.fehler_count = 0  
         self.sol_net = ""
         self.sol_bc = ""
         self.sol_mask = ""
 
-        self.mode_switch = customtkinter.CTkSwitch(self, text="Dunkelmodus", command=self.change_appearance_mode)
+        self.mode_switch = customtkinter.CTkSwitch(self,text="Dunkelmodus",command=self.change_appearance_mode)
         self.mode_switch.place(relx=0.82, rely=0.05)
 
         self.label = customtkinter.CTkLabel(self, text="Fachinformatiker Mathetrainer", font=("Arial", 24, "bold"))
@@ -484,8 +484,11 @@ class Mathetrainer(customtkinter.CTk):
         self.label.configure(text="Fachinformatiker Mathetrainer")
 
     def change_appearance_mode(self):
-        mode = "dark" if self.mode_switch.get() == 1 else "light"
-        customtkinter.set_appearance_mode(mode)
+        """Wechselt das Design ohne die UI neu zu laden."""
+        if self.mode_switch.get() == 1:
+            customtkinter.set_appearance_mode("dark")
+        else:
+            customtkinter.set_appearance_mode("light")
 
     def setup_main_menu(self):
         # Container für die Buttons im Hauptmenü
@@ -511,7 +514,7 @@ class Mathetrainer(customtkinter.CTk):
             ("Elektrotechnik (U, I, R, P)", self.show_elektro_trainer),
             ("Subnetting", self.show_subnet_trainer),
             ("Handelskalkulation", self.show_kalk_trainer),
-            ("RAID", self.show_raid_trainer),  # <-- HIER HINZUFÜGEN
+            ("RAID", self.show_raid_trainer),  
             ("Speicherbedarf", self.show_storage_trainer),
             ("Verfügbarkeit", self.show_availability_trainer),
             ("Netzplan", self.show_netzplan_trainer),
@@ -601,87 +604,120 @@ class Mathetrainer(customtkinter.CTk):
             frame.pack_forget()
 
     def toggle_taschenrechner(self):
-        if self.tr_window is None or not self.tr_window.winfo_exists():
+        """Öffnet den Rechner oder schließt ihn, wenn er bereits offen ist."""
+        if self.tr_window is not None and self.tr_window.winfo_exists():
+            self.tr_window.destroy()
+            self.tr_window = None
+        else:
             self.tr_window = customtkinter.CTkToplevel(self)
-            self.tr_window.title("Tachenrechner")
+            self.tr_window.title("Taschenrechner")
             self.tr_window.geometry("350x500")
             self.tr_window.attributes("-topmost", True)
             self.tr_window.resizable(False, False)
-
-            # Display
-            self.display = customtkinter.CTkEntry(self.tr_window, font=("Arial", 28), justify="right", state="readonly")
-            self.display.grid(row=0, column=0, columnspan=4, padx=10, pady=20, sticky="nsew")
-
-            buttons = [
-                'C', '(', ')', '/',
-                '7', '8', '9', '*',
-                '4', '5', '6', '-',
-                '1', '2', '3', '+',
-                '0', '.', '√', '=',
-                '^'
-            ]
-
-            r, c = 1, 0
-            for button in buttons:
-                b_color = "#1f6aa5" if button == "=" else ("#A82424" if button == "C" else None)
-                cmd = lambda x=button: self.rechner_klick(x)
-                btn = customtkinter.CTkButton(self.tr_window, text=button, width=70, height=50,command=cmd, font=("Arial", 18), fg_color=b_color)
-                btn.grid(row=r, column=c, padx=5, pady=5)
-                c += 1
-                if c > 3:
-                    c = 0
-                    r += 1
-
-            self.tr_window.bind("<Key>", self.rechner_key_event)
+            self.setup_rechner_ui() 
             self.tr_window.focus_force()
-        else:
-            self.tr_window.focus()
-            self.tr_window.attributes("-topmost", True)
+
+    def setup_rechner_ui(self):
+        """Erstellt das Layout des Taschenrechners mit Backspace-Button."""
+        # Display
+        self.display = customtkinter.CTkEntry(self.tr_window, font=("Arial", 28), justify="right", state="readonly")
+        self.display.grid(row=0, column=0, columnspan=4, padx=10, pady=20, sticky="nsew")
+
+        # Liste der Buttons - "⌫" steht jetzt neben "C"
+        buttons = [
+            'C', '⌫', '(', ')',
+            '7', '8', '9', '/',
+            '4', '5', '6', '*',
+            '1', '2', '3', '-',
+            '0', '.', '√', '+',
+            '^', '=', '', ''
+        ]
+
+        r, c = 1, 0
+        for button in buttons:
+            if button == "":  
+                c += 1
+                continue
+
+            # Farben für Spezial-Buttons
+            if button == "=":
+                b_color = "#1f6aa5"
+            elif button == "C":
+                b_color = "#A82424"
+            elif button == "⌫":
+                b_color = "#A9711C"  
+            else:
+                b_color = None
+
+            # Zuweisung der Funktion
+            if button == "⌫":
+                cmd = self.rechner_backspace
+            else:
+                cmd = lambda x=button: self.rechner_klick(x)
+
+            btn = customtkinter.CTkButton(self.tr_window, text=button, width=70, height=50,
+                                          command=cmd, font=("Arial", 18), fg_color=b_color)
+            btn.grid(row=r, column=c, padx=5, pady=5)
+
+            c += 1
+            if c > 3:
+                c = 0
+                r += 1
+
+        self.tr_window.bind("<Key>", self.rechner_key_event)
+
+    def rechner_backspace(self):
+        """Löscht nur das letzte Zeichen im Display."""
+        self.display.configure(state="normal")
+        aktuell = self.display.get()
+        if aktuell:
+        
+            neu = aktuell[:-1]
+            self.display.delete(0, "end")
+            self.display.insert(0, neu)
+        self.display.configure(state="readonly")
 
     def toggle_hilfe(self):
-        """Öffnet das Hilfe-Fenster passend zum aktuellen Trainer."""
+        """Öffnet die Lern-Hilfe oder schließt sie bei erneutem Klick."""
         if self.hilfe_window is not None and self.hilfe_window.winfo_exists():
-            self.hilfe_window.focus()
-            return
+            self.hilfe_window.destroy()
+            self.hilfe_window = None
+        else:
+            selected_key = None
+            frame_mapping = {
+                "binär_frame": "binär",
+                "hex_frame": "hexadezimal",
+                "speicher_frame": "speichergrößen",
+                "download_frame": "downloadgeschwindigkeit",
+                "elektro_frame": "elektrotechnik (u, i, r, p)",
+                "subnet_frame": "subnetting",
+                "kalk_frame": "handelskalkulation",
+                "raid_frame": "raid",
+                "storage_frame": "speicherbedarf",
+                "availability_frame": "verfügbarkeit",
+                "netzplan_frame": "netzplan",
+                "gantt_frame": "gantt-diagramm (zeitplan)"
+            }
 
+            for attr_name, key in frame_mapping.items():
+                if hasattr(self, attr_name):
+                    frame_obj = getattr(self, attr_name)
+                    if frame_obj is not None and frame_obj.winfo_viewable():
+                        selected_key = key
+                        break
 
-        selected_key = None
+            inhalt = self.hilfe_texte.get(selected_key, "Keine Hilfe für diesen Bereich verfügbar.")
 
-        frame_mapping = {
-            "binär_frame": "binär",
-            "hex_frame": "hexadezimal",
-            "speicher_frame": "speichergrößen",
-            "download_frame": "downloadgeschwindigkeit",
-            "elektro_frame": "elektrotechnik (u, i, r, p)",
-            "subnet_frame": "subnetting",
-            "kalk_frame": "handelskalkulation",
-            "raid_frame": "raid",
-            "storage_frame": "speicherbedarf",
-            "availability_frame": "verfügbarkeit",
-            "netzplan_frame": "netzplan",
-            "gantt_frame": "gantt-diagramm (zeitplan)"
-        }
+            self.hilfe_window = customtkinter.CTkToplevel(self)
+            self.hilfe_window.title("Lern-Hilfe")
+            self.hilfe_window.geometry("500x450")
+            self.hilfe_window.attributes("-topmost", True)
 
-        for attr_name, key in frame_mapping.items():
-            if hasattr(self, attr_name):
-                frame_obj = getattr(self, attr_name)
-                if frame_obj is not None and frame_obj.winfo_viewable():
-                    selected_key = key
-                    break
-
-        inhalt = self.hilfe_texte.get(selected_key, "Keine Hilfe für diesen Bereich verfügbar.")
-
-        # 2. Fenster erstellen
-        self.hilfe_window = customtkinter.CTkToplevel(self)
-        self.hilfe_window.title("Lern-Hilfe")
-        self.hilfe_window.geometry("500x450")
-        self.hilfe_window.attributes("-topmost", True)
-
-        hilfe_box = customtkinter.CTkTextbox(self.hilfe_window, font=("Consolas", 12), wrap="word")
-        hilfe_box.pack(fill="both", expand=True, padx=20, pady=20)
-
-        hilfe_box.insert("1.0", inhalt)
-        hilfe_box.configure(state="disabled")
+            hilfe_box = customtkinter.CTkTextbox(self.hilfe_window, font=("Consolas", 12), wrap="word")
+            hilfe_box.pack(fill="both", expand=True, padx=20, pady=20)
+            hilfe_box.insert("1.0", inhalt)
+            hilfe_box.configure(state="disabled")
+            self.hilfe_window.focus_force()
 
     def rechner_klick(self, taste):
         self.display.configure(state="normal")
@@ -720,7 +756,11 @@ class Mathetrainer(customtkinter.CTk):
         return "break"
 
     def toggle_notizblock(self):
-        if self.note_window is None or not self.note_window.winfo_exists():
+        """Öffnet den Notizblock oder schließt ihn bei erneutem Klick."""
+        if self.note_window is not None and self.note_window.winfo_exists():
+            self.note_window.destroy()
+            self.note_window = None
+        else:
             self.note_window = customtkinter.CTkToplevel(self)
             self.note_window.title("Rechenweg / Notizen")
             self.note_window.geometry("400x400")
@@ -731,12 +771,11 @@ class Mathetrainer(customtkinter.CTk):
             self.notiz_text.pack(fill="both", expand=True, padx=10, pady=10)
 
             # Button zum schnellen Löschen
-            customtkinter.CTkButton(self.note_window, text="Alles löschen",command=lambda: self.notiz_text.delete("1.0", "end"),fg_color="#A82424").pack(pady=5)
+            customtkinter.CTkButton(self.note_window, text="Alles löschen",
+                                     command=lambda: self.notiz_text.delete("1.0", "end"),
+                                     fg_color="#A82424").pack(pady=5)
 
             self.note_window.focus_force()
-        else:
-            self.note_window.focus()
-            self.note_window.attributes("-topmost", True)
 
 
 
@@ -892,7 +931,6 @@ class Mathetrainer(customtkinter.CTk):
         self.speicher_next_button = customtkinter.CTkButton(self.speicher_btn_frame, text="Nächste Aufgabe",command=self.neue_speicher_aufgabe, fg_color="green")
 
     def neue_speicher_aufgabe(self, modus_auswahl=None):
-        
 
         self.reset_fehler()
 
@@ -2069,7 +2107,7 @@ class Mathetrainer(customtkinter.CTk):
 
         self.update_idletasks()
         c_width = self.gantt_canvas_fullscreen.winfo_width()
-        if c_width < 100: c_width = 700  # Fallback
+        if c_width < 100: c_width = 700  
 
         x_offset = c_width * 0.2
         y_offset = 80
